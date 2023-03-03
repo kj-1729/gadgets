@@ -2,131 +2,100 @@
 
 import sys
 import os
-import io
 import datetime
 import re
-							  
-write = sys.stdout.write
 
 class list_files:
 	def __init__(self, base_dir, max_depth):
 		self.base_dir = base_dir	
 		self.max_depth = max_depth
-		self.file_name_list = {}
 		self.seqno = 0
 		self.path = []
 		
 	def process(self):
-		write('SEQNO\tPARENT_SEQNO\tDIR/FILE\tDEPTH\tEXTENTION\tFILE_NAME\tDIRNAME\tFULL_PATH\tSIZE\tLAST_MODIFIED')
-		for idx in range(15):
-			write("\t")
-			write("PATH_"+str(idx+1))
-		write("\n")
+		self.print_header()
 
-		self.do_list_files(self.base_dir, '', 0, 0)
+		data = {'parent_seqno': 0,
+			'depth': 0,
+			'dir': self.base_dir,
+		}
+
+		self.do_process(data)
 		
-	def do_list_files(self, this_dir, path, this_depth, parent_seqno):
-		if this_depth > self.max_depth and self.max_depth >= 0:
-			sys.stderr.write('Skip: '+this_dir+'\n')
+	def do_process(self, data):
+		if data['depth'] > self.max_depth and self.max_depth >= 0:
+			sys.stderr.write('Skip: '+data['dir']+'\n')
 			return
 			
-		file_list = os.listdir(this_dir)
-		for this_file in file_list:
-			if this_file == 'Thumbs.db':
+		file_list = os.listdir(data['dir'])
+		for file_name in file_list:
+			if file_name == 'Thumbs.db':
 				continue
 				
-			this_file_fullpath = this_dir + '\\' + this_file
-			this_path = path + '\\' + this_file
+			data['fullpath'] = os.path.join(data['dir'], file_name)
 			
-			last_modified = datetime.datetime.fromtimestamp(os.stat(this_file_fullpath).st_mtime).strftime("%Y/%m/%d %H:%M:%S")
+			data['last_modified'] = datetime.datetime.fromtimestamp(os.stat(file_name_fullpath).st_mtime).strftime("%Y/%m/%d %H:%M:%S")
 
 			self.seqno += 1
-				
 
-			if os.path.isfile(this_file_fullpath):
-				#this_file_normed = re.sub('[\d/]+', 'X', this_file)
-				#if this_file_normed not in self.file_name_list.keys():
-				#	dummy = []
-				#	self.file_name_list[this_file_normed] = dummy
-				#self.file_name_list[this_file_normed].append([this_file_fullpath, last_modified])
-				
-				file_size = os.stat(this_file_fullpath).st_size
+			if os.path.isfile(data['fullpath']):
+				data['file_size'] = os.stat(data[fullpath']).st_size
 
-				m = re.search('^.*\.([^\.]+)*$', this_file)
+				m = re.search('^.*\.([^\.]+)*$', file_name)
 				if m is not None:
-					fname_suffix = m.group(1)
+					data['fname_suffix'] = m.group(1)
 				else:
-					fname_suffix = ''
+					data['fname_suffix'] = ''
+				data['file_dir'] = 'FILE'
 
-				###### OUTPUT ######
-				write(str(self.seqno)) #file_no_str)
-				write('\t')
-				write(str(parent_seqno))
-				write('\t')
-				write('FILE')
-				write('\t')
-				write(str(this_depth))
-				write('\t')
-				write(fname_suffix)
-				write('\t')
-				write(this_file)
-				write('\t')
-				write(this_dir)
-				write('\t')
-				write(this_file_fullpath)
-				write('\t')
-				write(str(file_size))
-				write('\t')
-				write(last_modified)
-				for this_path in self.path:
-					write("\t")
-					write(this_path)
-				write("\t")
-				write(this_file)
-				write('\n')
+				self.print_data(data)
 
-			elif os.path.isdir(this_file_fullpath):
-				file_size = ""
-				fname_suffix = ""
+			elif os.path.isdir(data['fullpath']):
+				data['file_size'] = ""
+				data['fname_suffix'] = ""
+				data['file_dir'] = 'DIR'
+				self.print_data(data)
 
-				###### OUTPUT ######
-				write(str(self.seqno)) #file_no_str)
-				write('\t')
-				write(str(parent_seqno))
-				write('\t')
-				write('DIR')
-				write('\t')
-				write(str(this_depth))
-				write('\t')
-				write(fname_suffix)
-				write('\t')
-				write(this_file)
-				write('\t')
-				write(this_dir)
-				write('\t')
-				write(this_file_fullpath)
-				write('\t')
-				write(str(file_size))
-				write('\t')
-				write(last_modified)
-				for this_path in self.path:
-					write("\t")
-					write(this_path)
-				write("\t")
-				write(this_file)
-				write('\n')
-
-				self.path.append(this_file)
-				self.do_list_files(this_file_fullpath, this_path, this_depth+1, self.seqno)
+				self.path.append(file_name)
+				
+				next_data = {'parent_seqno': self.seqno,
+					'depth': data['depth'] + 1,
+					'dir': data['fullpath'],
+				}
+				self.do_process(next_data)
 				self.path.pop()
+
+	def print_header(self):
+		write('SEQNO\tPARENT_SEQNO\tDIR/FILE\tDEPTH\tFILE_TYPE\tFILE_NAME\tDIRNAME\tFULL_PATH\tSIZE\tLAST_MODIFIED')
+		for idx in range(15):
+			print('\t', end='')
+			print(f'PATH_{idx+1}', end='')
+		print("")
+
+	def print_data(self, data):
+		print(str(self.seqno), data['parent_seqno'], data['file_dir'], data['depth'], data['fname_suffix'], data['file_name'], data['dir'], data['fullpath'], data['file_size'], data['last_modified'], sep='\t', end='')
+		for this_path in self.path:
+			print('\t', end='')
+			print(this_path, end='')
+		print('\t')
+		print(file_name)
+		print('')
+
+
 	
 def main():
-	if len(sys.argv) < 3:
-		sys.stderr.write('Usage: python $0 base_dir max_depth\n')
+	if len(sys.argv) < 2:
+		sys.stderr.write('Usage: python $0 base_dir [max_depth]\n')
 		sys.exit(1)
 	
 	base_dir = sys.argv[1]
-	max_depth = int(sys.argv[2])
+	
+	if len(sys.argv) >= 3:
+		max_depth = int(sys.argv[2])
+	else:
+		max_depth = -1
+
+	print(f'base_dir: {base_dir}, max_depth: {max_depth}')
 	
 	hd = list_files(base_dir, max_depth)
 	hd.process()
@@ -135,4 +104,3 @@ if __name__ == '__main__':
 	main()
 
 
-		
