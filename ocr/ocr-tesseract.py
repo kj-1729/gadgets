@@ -37,13 +37,16 @@ class ocr:
 		# 13　Tesseract固有の処理を飛ばして一行の文章としてOCR処理
 		self.tesseract_layout = 6
 
-	def do_ocr(self, image_fullpath, text_fullpath):
+	def img2txt(self, image_fullpath):
 		img = Image.open(image_fullpath)
 		builder = pyocr.builders.TextBuilder(tesseract_layout=self.tesseract_layout)
-		text = self.tool.image_to_string(img, lang="jpn", builder=builder)
+		self.text = self.tool.image_to_string(img, lang="jpn", builder=builder)
 		
+		return self.text
+		
+	def save_txt(self, text_fullpath):
 		with open(text_fullpath, 'w') as fp:
-			print(text, file=fp)
+			print(self.text, file=fp)
 
 def main():
 	ocr_hd = ocr()
@@ -54,7 +57,8 @@ def main():
 		data = line[:-1].split('\t')
 		img_fullpath = data[CFG.idx_fullpath]
 		txt_fullpath = os.path.join(data[CFG.idx_dir], data[CFG.idx_seqno] + '.txt')
-		ocr_hd.do_ocr(img_fullpath, txt_fullpath)
+		ocr_hd.img2txt(img_fullpath)
+		ocr_hd.save_text(txt_fullpath)
 
 if __name__ == '__main__':
 	main()
