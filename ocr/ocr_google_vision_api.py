@@ -32,7 +32,6 @@ class ocr:
 		response = self.client.document_text_detection(image=image)
 		
 		self.txt = response.full_text_annotation.text
-		#txt_encoded = txt.encode('cp932', 'ignore')
 
 		return self.txt
 
