@@ -7,8 +7,8 @@ python list_files.py (dirname)
 ```
 
 Output file layout
-|No.|column name|content|
-|0|seqno|sequential number|
+|　No.　|　column name　|　content　|
+|　0　|　seqno　|　sequential number　|
 
 
 # sh_wrapper.py
