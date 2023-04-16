@@ -1,0 +1,216 @@
+# -*- encoding: cp932 -*-
+
+import sys
+import re
+
+write = sys.stdout.write
+
+
+class kana_alpha_transf:
+	def __init__(self):
+		self.kana_map_1 = {u'±' : 'A',  u'²' : 'I',  u'³' : 'U',  u'´' : 'E',  u'µ' : 'O', 
+		 u'¶' : 'KA',  u'·' : 'KI',  u'¸' : 'KU',  u'¹' : 'KE',  u'º' : 'KO', 
+		 u'»' : 'SA',  u'¼' : 'SHI',  u'½' : 'SU',  u'¾' : 'SE',  u'¿' : 'SO', 
+		 u'À' : 'TA',  u'Á' : 'CHI',  u'Â' : 'TSU',  u'Ã' : 'TE',  u'Ä' : 'TO', 
+		 u'Å' : 'NA',  u'Æ' : 'NI',  u'Ç' : 'NU',  u'È' : 'NE',  u'É' : 'NO', 
+		 u'Ê' : 'HA',  u'Ë' : 'HI',  u'Ì' : 'FU',  u'Í' : 'HE',  u'Î' : 'HO', 
+		 u'Ï' : 'MA',  u'Ð' : 'MI',  u'Ñ' : 'MU',  u'Ò' : 'ME',  u'Ó' : 'MO', 
+		 u'Ô' : 'YA',   u'Õ' : 'YU',   u'Ö' : 'YO', 
+		 u'×' : 'RA',  u'Ø' : 'RI',  u'Ù' : 'RU',  u'Ú' : 'RE',  u'Û' : 'RO', 
+		 u'Ü' : 'WA',     u'¦' : 'WO', 
+		 u'Ý' : 'N', u'°' : '', u'-' : '', u'¥' : ' '}
+
+		self.kana_map_2 = {u'³Þ' : 'VU', u'¶Þ' : 'GA',  u'·Þ' : 'GI',  u'¸Þ' : 'GU',  u'¹Þ' : 'GE',  u'ºÞ' : 'GO', 
+		 u'»Þ' : 'ZA',  u'¼Þ' : 'JI',  u'½Þ' : 'ZU',  u'¾Þ' : 'ZE',  u'¿Þ' : 'ZO', 
+		 u'ÀÞ' : 'DA',  u'ÁÞ' : 'DI',  u'ÂÞ' : 'DU',  u'ÃÞ' : 'DE',  u'ÄÞ' : 'DO', 
+		 u'ÊÞ' : 'BA',  u'ËÞ' : 'BI',  u'ÌÞ' : 'BU',  u'ÍÞ' : 'BE',  u'ÎÞ' : 'BO', 
+		 u'Êß' : 'PA',  u'Ëß' : 'PI',  u'Ìß' : 'PU',  u'Íß' : 'PE',  u'Îß' : 'PO'}
+
+
+		self.kana_map_3 = {u'³§' : 'WA', u'³¨' : 'WI', u'³ª' : 'WE', u'³«' : 'WO',
+		 u'·¬' : 'KYA',  u'·­' : 'KYU',  u'·®' : 'KYO', 
+		 u'¼¬' : 'SYA',  u'¼­' : 'SYU',  u'¼ª' : 'SHE',  u'¼®' : 'SYO', 
+		 u'Á¬' : 'TYA',  u'Á­' : 'TYU',  u'Áª' : 'CHE', u'Á®' : 'TYO', 
+		 u'Ã¨' : 'TYI', u'Ä©' : 'TYU',
+		 u'Æ¬' : 'NYA',  u'Æ­' : 'NYU',  u'Æ®' : 'NYO', 
+		 u'Ë¬' : 'HYA',  u'Ë­' : 'HYU',  u'Ë®' : 'HYO', 
+		 u'Ì§' : 'FA',  u'Ì¨' : 'FI',  u'Ìª' : 'FE',  u'Ì«' : 'FO', 
+		 u'Ð¬' : 'MYA',  u'Ð­' : 'MYU',  u'Ð®' : 'MYO', 
+		 u'Ø¬' : 'RYA',  u'Ø­' : 'RYU',  u'Ø®' : 'RYO'}
+
+		self.kana_map_4 = {u'³Þ§' : 'VA', u'³Þ¨': 'VI', u'³Þª' : 'VE', u'³Þ«' : 'VO',
+		 u'·Þ¬' : 'GYA',  u'·Þ­' : 'GYU',  u'·Þ®' : 'GYO', 
+		 u'¸Þª' : 'GYE',
+		 u'¼Þ¬' : 'JA',  u'¼Þ­' : 'JU',  u'¼Þª' : 'JE', u'¼Þ®' : 'JO', 
+		 u'ÁÞ¬' : 'DYA',  u'ÁÞ­' : 'DYU',  u'ÁÞ®' : 'DYO',
+		 u'ÃÞ¨' : 'DYI', u'ÃÞ­' : 'DYU',  u'ÄÞ©' : 'DU',
+		 u'ËÞ¬' : 'BYA',  u'ËÞ­' : 'BYU',  u'ËÞ®' : 'BYO', 
+		 u'Ëß¬' : 'PYA',  u'Ëß­' : 'PYU',  u'Ëß®' : 'PYO'}
+
+		self.multiple_str = {u'Þ' : 1, u'ß' : 1,  u'¬' : 1,  u'­' : 1,  u'®' : 1,  u'§' : 1,  u'¨' : 1,  u'©' : 1,  u'ª' : 1,  u'«' : 1}
+		self.small_tsu = u'¯'
+		
+		#self.error_str = '[ERROR]'
+		self.error_str = ''
+
+	def kana2alpha(self, str):
+		self.alpha_str = ''
+		self.orig_str = ''
+		str_len = len(str)
+		
+		self.flg_small_tsu = 'N'
+		loop_st = 0
+		while loop_st < str_len:
+			if str[loop_st] == ' ':
+			### blank
+				self.alpha_str += ' '
+				self.orig_str += '|' + str[loop_st]
+				loop_st += 1
+			else:
+				m = re.search('[A-Za-z0-9\'\.\-\(\)]', str[loop_st])
+				if m is not None:
+				### alphabet
+					self.alpha_str += str[loop_st]
+					self.orig_str += '|' + str[loop_st]
+					loop_st += 1
+				else:
+					if loop_st + 1 >= str_len:
+					### 1 character (end of str)
+						chr = self.get_alpha(1, str[loop_st])
+						self.alpha_str = self.alpha_str + chr
+						self.orig_str += '|' + str[loop_st]
+						loop_st += 1
+					elif str[loop_st] == self.small_tsu:
+						self.flg_small_tsu = 'Y'
+						loop_st += 1
+					else:
+						loop_ed = loop_st+1
+						if self.multiple_str.has_key(str[loop_ed]):
+						### 2 or more characters
+							loop_ed += 1
+							if loop_ed >= str_len:
+							### 2 characters (end of str)
+								chr = self.get_alpha(2, str[loop_st:loop_ed])
+								self.orig_str += '|' + str[loop_st:loop_ed]
+								self.alpha_str = self.alpha_str + chr
+								loop_st += 2
+							elif self.multiple_str.has_key(str[loop_ed]):
+							### 3 characters
+								loop_ed += 1
+								chr = self.get_alpha(3, str[loop_st:loop_ed])
+								self.orig_str += '|' + str[loop_st:loop_ed]
+								self.alpha_str = self.alpha_str + chr
+								loop_st += 3
+							else:
+							### 2 characters
+								chr = self.get_alpha(2, str[loop_st:loop_ed])
+								self.orig_str += '|' + str[loop_st:loop_ed]
+								self.alpha_str = self.alpha_str + chr
+								loop_st += 2
+						else:
+						### 1 character
+							chr = self.get_alpha(1, str[loop_st])
+							self.orig_str += '|' + str[loop_st]
+							self.alpha_str = self.alpha_str + chr
+							loop_st += 1
+		#write("ORIG: "+self.orig_str.encode('cp932')+"\n")
+		return self.pretty_alpha_str(self.alpha_str)
+		
+		
+	def get_alpha(self, len_str, str):
+		if len_str == 1:
+			if self.kana_map_1.has_key(str):
+				this_chr = self.kana_map_1[str]
+			else:
+				return self.error_str
+		elif len_str == 2:
+			if self.kana_map_2.has_key(str):
+				this_chr = self.kana_map_2[str]
+			elif self.kana_map_3.has_key(str):
+				this_chr = self.kana_map_3[str]
+			else:
+				return self.error_str
+		elif len_str == 3:
+			if self.kana_map_4.has_key(str):
+				this_chr = self.kana_map_4[str]
+			else:
+				return self.error_str
+		else:
+			return self.error_str
+
+		if self.flg_small_tsu == 'Y':
+			self.flg_small_tsu = 'N'
+			if len(this_chr) > 0:
+				return this_chr[0] + this_chr
+			else:
+				return this_chr
+		else:
+			return this_chr
+
+	def pretty_alpha_str(self, str):
+		pretty_str = re.sub('OU', 'O', str)
+		pretty_str = re.sub('UU', 'U', pretty_str)
+		pretty_str = re.sub('OO', 'O', pretty_str)
+
+		return pretty_str
+		
+	def flip_name(self, str):
+		m = re.search('^([^\s]*) (.*)$', str)
+		if m is not None:
+			flipped_str = m.group(2) + ' ' + m.group(1)
+		else:
+			flipped_str = str
+		
+		return flipped_str
+		
+	def get_orig_str(self):
+		return self.orig_str
+		
+def pretty_claimant_name(str):
+	m = re.search('^TY[0-9]* (.*)$', str)
+	if m is not None:
+		return m.group(1)
+	else:
+		m = re.search('^EQ[0-9]* (.*)$', str)
+		if m is not None:
+			return m.group(1)
+		else:
+			m = re.search('^LP[0-9]* (.*)$', str)
+			if m is not None:
+				return m.group(1)
+			else:
+				return str
+
+def main():
+	header = sys.stdin.readline()
+	hd = kana_alpha_transf()
+	idx_claimant_name = 12
+	
+	outdelim = "\t"
+	cnt = 0
+	for line in sys.stdin:
+		line_u = unicode(line, 'cp932')
+		data = line_u[:-1].split('\t')
+		
+		claimant_name = pretty_claimant_name(data[idx_claimant_name])
+		#print "-------------------------------------"
+		alpha_str = hd.kana2alpha(claimant_name)
+		cnt += 1
+		
+		write(data[0])
+		write(outdelim)
+		#write(data[1])
+		#write(outdelim)
+		#write(data[idx_claimant_name].encode('cp932'))
+		#write(outdelim)
+		#write((hd.get_orig_str()).encode('cp932'))
+		#write(outdelim)
+		write(alpha_str)
+		write(outdelim)
+		write(hd.flip_name(alpha_str))
+		write("\n")
+		
+
+if __name__ == '__main__':
+	main()
+
