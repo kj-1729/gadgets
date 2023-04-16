@@ -37,6 +37,6 @@ Input file layout:
  |　No.　|　column name　|　content　|
  | --- | --- | --- |
  | 0 | SEQNO | sequential number |
- | 1 | FILENAME_FROM | directory/file name copied/moved from <br> directory name to be creaated|
- | 2 | FILENAME_TO | directory/file name copied/moved to <br> not used for 'mkdir' |
+ | 1 | FILENAME_FROM | 'copy'/'move': directory/file name copied/moved from <br> 'mkdir': directory name to be creaated|
+ | 2 | FILENAME_TO | 'copy'/'move': directory/file name copied/moved to <br> 'mkdir': not used |
  
