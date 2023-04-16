@@ -1,5 +1,5 @@
 # list_files.py
-This list all directories/files under a given directory.
+This will list all directories/files under a given directory.
 
 Usage:
 ```
