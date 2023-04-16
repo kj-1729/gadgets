@@ -9,7 +9,6 @@ python list_files.py (dirname)
 Output file layout
  |　No.　|　column name　|　content　|
  | --- | --- | --- |
- |　0　|　seqno　|　sequential number　|
  | 0 | SEQNO | sequential number |
  | 1 | PARENT_SEQNO | parent sequential number |
  | 2 | DIR | directory |
@@ -33,3 +32,11 @@ Usage:
 ```
 cat data.txt | python sh_wrapper [copy/move/mkdir]
 ```
+
+Input file layout:
+ |　No.　|　column name　|　content　|
+ | --- | --- | --- |
+ | 0 | SEQNO | sequential number |
+ | 1 | FILENAME_FROM | directory/file name copied/moved from <br> directory name to be creaated|
+ | 2 | FILENAME_TO | directory/file name copied/moved to <br> not used for 'mkdir' |
+ 
