@@ -1,8 +1,8 @@
 # gadgets
 
-This is a basic tool in applying a list of files to some task.
+These are basic tools in applying a list of files to the some tasks.
 To do this, use list_files.py to list all the files under a directory,
-then feed the list to another tools (ocr, etc).
+then feed the list to the other tool.
 
 Usage:
 ```
