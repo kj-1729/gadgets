@@ -1,8 +1,8 @@
 # gadgets
 
-These are basic tools in applying a list of files to the some tasks.
-To do this, use list_files.py to list all the files under a directory,
-then feed the list to the other tool.
+These tools are used for small data processing tasks.
+Many of them take a list of files as an input, then act on these files.
+Typical usage of these tools is as follows:
 
 Usage:
 ```
