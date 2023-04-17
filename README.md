@@ -6,6 +6,6 @@ Typical usage of these tools is as follows:
 
 Usage:
 ```
-python list_files.py (dirname) > file_list.txt
+python files_dirs.py (ROOTDIR) > file_list.txt
 cat file_list.txt | python (some task).py
 ```
