@@ -21,4 +21,26 @@ This contains information about
 "to" sheet of data_to.xlsx (before/after the python code is run)
 <img width="539" alt="data_to" src="https://user-images.githubusercontent.com/87534698/232361982-7ed81d09-571c-4ff3-af18-57bf76efa99d.png">
 
+# xls2db.py
+This extracts data from an Excel file, output these data with cell index (row/column index).
+
+Usage:
+```
+python xls2db.py (data filename(xlsx)) (output filename(xlsx))
+```
+
+## Output Data Layout
+ | No. | item | content |
+ | 0 | SEQNO | sequential number |
+ | 1 | SHEETNAME | sheetname |
+ | 2 | ROW | row index |
+ | 3 | COLUMN | column index |
+ | 4 | DATATYPE | datatype |
+ | 5 | VALUE | value |
+ 
+## Sample Input/Output
+
+Sample Input: 
+
+Sample Output:
 
