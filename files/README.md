@@ -1,9 +1,9 @@
-# list_files.py
+# files_dirs.py
 This will list all directories/files under a given directory.
 
 Usage:
 ```
-python list_files.py (dirname)
+python files_dirs.py (dirname)
 ```
 
 Output file layout
