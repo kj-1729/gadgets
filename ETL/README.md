@@ -32,6 +32,7 @@ python xls2db.py (data filename(xlsx)) (output filename(xlsx))
 ## Output Data Layout
 
  | No. | item | content |
+ | --- | --- | --- |
  | 0 | SEQNO | sequential number |
  | 1 | SHEETNAME | sheetname |
  | 2 | ROW | row index |
