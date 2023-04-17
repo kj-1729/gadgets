@@ -1,9 +1,9 @@
-# list_files.py
+# files_dirs.py
 This will list all directories/files under a given directory.
 
 Usage:
 ```
-python list_files.py (dirname)
+python files_dirs.py (dirname)
 ```
 
 Output file layout
@@ -11,18 +11,17 @@ Output file layout
  | --- | --- | --- |
  | 0 | SEQNO | sequential number |
  | 1 | PARENT_SEQNO | parent sequential number |
- | 2 | DIR | directory |
- | 3 | FILE | 'DIR'/'File' |
- | 4 | DEPTH | depth (starting from ROOT) |
- | 5 | FILE_TYPE | file extention (xlsx, txt, etc) |
- | 6 | FILE_NAME | filename |
- | 7 | DIRNAME | directory name |
- | 8 | FULL_PATH | file path |
- | 9 | SIZE | file size |
- | 10 | LAST_MODIFIED | last modified date |
- | 11 | Path1 | path1 (starting from ROOT) |
- | 12 | Path2 | path2 (starting from ROOT) |
- | 13 | Path3 | path3 (starting from ROOT) |
+ | 2 | DIR/FILE | 'DIR'/'File' |
+ | 3 | DEPTH | depth (starting from ROOT) |
+ | 4 | FILE_TYPE | file extention (xlsx, txt, etc) |
+ | 5 | FILE_NAME | filename |
+ | 6 | DIRNAME | directory name |
+ | 7 | FULL_PATH | file path |
+ | 8 | SIZE | file size |
+ | 9 | LAST_MODIFIED | last modified date |
+ | 10 | Path1 | path1 (starting from ROOT) |
+ | 11 | Path2 | path2 (starting from ROOT) |
+ | 12 | Path3 | path3 (starting from ROOT) |
  | ... | ... | ... | 
 
 # sh_wrapper.py
