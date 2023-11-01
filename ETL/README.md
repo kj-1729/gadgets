@@ -3,11 +3,11 @@ This copies cells from an Excel file to another.
 
 Usage:
 ```
-python xls_copy_and_paste.py (config_file name)
+python xls_copy_and_paste.py (config file name)
 ```
 
-## Config file
-This contains information about
+## Config file (xlsx)
+This contains a sheet ("config") which describes
 - Excel files copied from/to
 - Spreadsheet/cells copied from/to
 
@@ -19,10 +19,11 @@ This contains information about
 <img width="329" alt="data_from" src="https://user-images.githubusercontent.com/87534698/232361961-ed3ea744-1d89-4f2c-a87c-cba1febe40e6.png">
 
 "to" sheet of data_to.xlsx (before/after the python code is run)
+
 <img width="539" alt="data_to" src="https://user-images.githubusercontent.com/87534698/232361982-7ed81d09-571c-4ff3-af18-57bf76efa99d.png">
 
 # xls2db.py
-This extracts data from an Excel file, output these data with cell index (row/column index).
+This extracts data from an Excel file, output the data with cell index (row/column index).
 
 Usage:
 ```
